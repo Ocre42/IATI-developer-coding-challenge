@@ -1,6 +1,6 @@
 import csv
 import math
-import date
+from datetime import datetime
 
 filename = "tests/sample_data_fully_valid_10_rows.csv"
 
@@ -14,7 +14,7 @@ def run():
 			#Make sure the input is an integer
 			print('Input must be a number in YYYY format')
 			continue
-	get_total_budget_value(filename, year)
+	print("The total budget for " + year + " is: $" + str(get_total_budget_value(filename, year)))
 
 def valid_year(n):
 	#Make sure the input is a positive number and follows the YYYY format (4 digits, not negative)
@@ -22,6 +22,14 @@ def valid_year(n):
 		return True
 	else:
 		print("Input must be in YYYY format")
+		return False
+
+def check_start_year(date,year):
+	#Compare the start date's year of the current item of the list to the user's input
+	check = datetime.strptime(date,'%Y-%m-%d')
+	if year == str(check.year):
+		return True
+	else:
 		return False
 
 def get_total_budget_value(csv_filepath, year):
@@ -34,7 +42,7 @@ def get_total_budget_value(csv_filepath, year):
     Returns:
         (float) The USD value of projects that start in the given year
     """
-    rows = []
+    money = 0
     try:
     	with open(filename,'r') as csvfile:
     		reader = csv.reader(csvfile)
@@ -43,9 +51,11 @@ def get_total_budget_value(csv_filepath, year):
     				continue
     			elif row == []: #Skip empty rows
     				continue
+    			elif check_start_year(row[1],year):
+    				money += float(row[2]) #Add the budget for all rows matching the input year
     			else:
-    				rows.append(row[1])
-    		print(rows)
+    				continue
+    		return money
     except FileNotFoundError:
     	print("File does not exist")
 
