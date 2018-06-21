@@ -27,7 +27,7 @@ def valid_year(n):
 def check_start_year(date,year):
 	#Compare the start date's year of the current item of the list to the user's input
 	check = datetime.strptime(date,'%Y-%m-%d')
-	if year == str(check.year):
+	if str(year) == str(check.year):
 		return True
 	else:
 		return False
@@ -44,7 +44,7 @@ def get_total_budget_value(csv_filepath, year):
     """
     money = 0
     try:
-    	with open(filename,'r') as csvfile:
+    	with open(csv_filepath,'r') as csvfile:
     		reader = csv.reader(csvfile)
     		for idx, row in enumerate(reader):
     			if idx == 0: #Skip the fieldnames
@@ -57,7 +57,7 @@ def get_total_budget_value(csv_filepath, year):
     				continue
     		return money
     except FileNotFoundError:
-    	print("File does not exist")
+    	message("This file does not exist")
 
 if __name__ == '__main__':
 	run()
