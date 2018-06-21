@@ -34,6 +34,20 @@ def get_total_budget_value(csv_filepath, year):
     Returns:
         (float) The USD value of projects that start in the given year
     """
+    rows = []
+    try:
+    	with open(filename,'r') as csvfile:
+    		reader = csv.reader(csvfile)
+    		for idx, row in enumerate(reader):
+    			if idx == 0: #Skip the fieldnames
+    				continue
+    			elif row == []: #Skip empty rows
+    				continue
+    			else:
+    				rows.append(row[1])
+    		print(rows)
+    except FileNotFoundError:
+    	print("File does not exist")
 
 if __name__ == '__main__':
 	run()
